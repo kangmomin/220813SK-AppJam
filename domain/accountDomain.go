@@ -25,3 +25,8 @@ func (s SignUp) IsValidLen() (isOk bool) {
 	}
 	return true
 }
+
+type UserRank struct {
+	UserName  string `json:"user_name"`
+	PostCount int    `json:"post_count"`
+}

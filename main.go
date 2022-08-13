@@ -15,6 +15,7 @@ func main() {
 	r.POST("/posts", router.WritePost)            // test success
 	r.GET("/post/:postId", router.PostDetail)     // test success
 	r.DELETE("/posts/:postId", router.DeletePost) // 기능만은 구현 완료
+	r.GET("/rank", router.Rank)                   // test success
 
 	r.POST("/login", router.Login)    // test success
 	r.POST("/logout", router.Logout)  // test success
