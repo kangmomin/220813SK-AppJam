@@ -87,6 +87,12 @@ func DeletePost(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		return
 	}
 
+	_, err = util.DB.Exec(`UPDATE user SET post_count -= 1 WHERE user_id=$1;`, userId)
+	if err != nil {
+		response.GlobalErr("inserting err", err, 500, w)
+		return
+	}
+
 	resData, _ := json.Marshal(response.Res{
 		Data: "delete success",
 		Err:  false,
@@ -115,11 +121,17 @@ func WritePost(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	postId, err := util.DB.Exec(`INSERT INTO public.post(
 		title, description, owner_id) VALUES ($1, $2, $3);`,
 		pd.Title, pd.Description, userId)
-
 	if err != nil {
 		response.GlobalErr("inserting err", err, 500, w)
 		return
 	}
+
+	_, err = util.DB.Exec(`UPDATE user SET post_count += 1 WHERE user_id=$1;`, userId)
+	if err != nil {
+		response.GlobalErr("inserting err", err, 500, w)
+		return
+	}
+
 	resData, _ := json.Marshal(response.Res{
 		Data: postId,
 		Err:  false,
